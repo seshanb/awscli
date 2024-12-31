@@ -11,11 +11,7 @@ resource "aws_instance" "example_instance" {
 data "template_file" "install_python_script" {
   template = <<-EOF
     #!/bin/bash
-    response=$(sudo su ec2-user -c "aws ssm create-document --content '{\"schemaVersion\":\"2.2\",\"description\":\"Install Python\",\"mainSteps\":[{\"action\":\"aws:runShellScript\",\"name\":\"InstallPython\",\"inputs\":{\"runCommand\":[\"sudo yum install -y python3\"]}}]}' --name \"install-python\" --document-type \"Command\"")
-    echo "SSM Document Creation Response: $response"
-
-    response=$(sudo su ec2-user -c "aws ssm send-command --document-name \"install-python\" --targets '[{\"Key\":\"InstanceIds\",\"Values\":[\"${aws_instance.example_instance.id}\"]}]'")
-    echo "SSM Command Execution Response: $response"
+    aws ec2 describe-instances
   EOF
 }
 
